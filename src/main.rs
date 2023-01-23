@@ -111,7 +111,7 @@ fn setup(
         ..default()
     }).insert(Movable);
 
-    commands.spawn().insert_bundle(MaterialMesh2dBundle {
+    commands.spawn_empty().insert_bundle(MaterialMesh2dBundle {
         mesh: mesh_handle,
         transform: Transform::from_translation(Vec3::new(288., 0., 0.))
         .with_scale(Vec3::splat(128.)),

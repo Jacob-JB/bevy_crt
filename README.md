@@ -1,3 +1,14 @@
+# Bevy 0.9
+This is my own fork for the perposes for updating to bevy 0.9, see the original at https://github.com/cadyn/bevy_crt
+
+changes:
+- added all #[derive(Resource)]
+- overode Framecount2dPlugin<M> is_unique() to return true
+- ExtractResourcePlugin::<ExtractedFrameCount>::default() was being added multiple times, moved to build_common() in plugin.rs
+- removed BufferUsages::MAP_READ and BufferUsages::MAP_WRITE from line 47 in plugin.rs, I don't actually know what I'm doing here but removing this works?
+
+below is the original readme.
+
 # bevy_crt
 CRT Effect for the Bevy Engine
 My first crate for rust in general, as well as for the Bevy engine.

@@ -22,6 +22,10 @@ use bevy::{
 use super::materials::*;
 
 fn build_common(app: &mut App){
+    println!("building common");
+
+    app.add_plugin(ExtractResourcePlugin::<ExtractedFrameCount>::default());
+
     app.insert_resource(AfterglowImages::default())
         .add_plugin(FrameTimeDiagnosticsPlugin)
         .add_plugin(Material2dPlugin::<AfterglowMaterial>::default())
@@ -40,7 +44,7 @@ fn build_common(app: &mut App){
         fbuffer[i] = Some(render_device.create_buffer(&BufferDescriptor {
             label: Some(&format!("frame {} buffer",i)),
             size: 20000000, //About 20mb, enough for a 2048x2048 texture with uncompressed RGBA encoding with some wiggle room
-            usage: BufferUsages::STORAGE | BufferUsages::COPY_DST | BufferUsages::COPY_SRC | BufferUsages::MAP_READ | BufferUsages::MAP_WRITE,
+            usage: BufferUsages::STORAGE | BufferUsages::COPY_DST | BufferUsages::COPY_SRC, // | BufferUsages::MAP_READ // | BufferUsages::MAP_WRITE,
             mapped_at_creation: false,
         }));
     }
@@ -81,10 +85,10 @@ impl Plugin for Crt3dPlugin {
 #[derive(Component,Default)]
 pub struct PrimaryCamera;
 
-#[derive(Deref,DerefMut,Default)]
+#[derive(Deref,DerefMut,Default, Resource)]
 struct FrameBuffer([Option<Buffer>;3]);
 
-#[derive(Component,Default)]
+#[derive(Component,Default, Resource)]
 pub struct AfterglowImages{
     pub out_handle: Option<Handle<Image>>,
     pub in_handle: Option<Handle<Image>>,
@@ -92,7 +96,7 @@ pub struct AfterglowImages{
     pub frame_buffer: [Handle<Image>;3],
 }
 
-#[derive(Default)]
+#[derive(Default, Resource)]
 struct ExtractedAfterglowImages {
     out_handle: Option<Handle<Image>>,
     in_handle: Option<Handle<Image>>,

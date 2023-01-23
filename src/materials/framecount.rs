@@ -35,8 +35,8 @@ use bevy::{
 
 
 // This is how we get the framecount into our shaders.
-#[derive(Default)]
-struct ExtractedFrameCount {
+#[derive(Default, Resource)]
+pub struct ExtractedFrameCount {
     framecount: u32
 }
 
@@ -55,6 +55,7 @@ impl ExtractResource for ExtractedFrameCount {
     }
 }
 
+#[derive(Resource)]
 pub struct Framecount2dPipeline<M: Material2d> {
     pub mesh2d_pipeline: Mesh2dPipeline,
     pub material2d_layout: BindGroupLayout,
@@ -136,6 +137,7 @@ impl<M: Material2d> FromWorld for Framecount2dPipeline<M> {
 }
 
 //Keeps track of the buffer and bindgroup that we use.
+#[derive(Resource)]
 struct FrameMeta {
     buffer: Buffer,
     bind_group: Option<BindGroup>,
@@ -204,8 +206,7 @@ where
             mapped_at_creation: false,
         });
         app.add_asset::<M>()
-            .add_plugin(ExtractComponentPlugin::<Handle<M>>::extract_visible())
-            .add_plugin(ExtractResourcePlugin::<ExtractedFrameCount>::default());
+            .add_plugin(ExtractComponentPlugin::<Handle<M>>::extract_visible());
         if let Ok(render_app) = app.get_sub_app_mut(RenderApp) {
             render_app
                 .add_render_command::<Transparent2d, DrawFramecount2d<M>>()
@@ -227,6 +228,10 @@ where
                 .add_system_to_stage(RenderStage::Queue, queue_frame_bind_group::<M>);
         }
     }
+
+    fn is_unique(&self) -> bool {
+        false
+    }
 }
 
 
@@ -239,6 +244,7 @@ type DrawFramecount2d<M> = (
     DrawMesh2d,
 );
 
+#[derive(Resource)]
 struct ExtractedMaterials2d<M: Material2d> {
     extracted: Vec<(Handle<M>, M)>,
     removed: Vec<Handle<M>>,
