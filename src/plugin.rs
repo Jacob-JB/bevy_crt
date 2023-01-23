@@ -22,8 +22,6 @@ use bevy::{
 use super::materials::*;
 
 fn build_common(app: &mut App){
-    println!("building common");
-
     app.add_plugin(ExtractResourcePlugin::<ExtractedFrameCount>::default());
 
     app.insert_resource(AfterglowImages::default())
