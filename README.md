@@ -4,7 +4,7 @@ This is my own fork for the perposes for updating to bevy 0.9, see the original 
 changes:
 - added all #[derive(Resource)]
 - overode Framecount2dPlugin<M> is_unique() to return true
-- ExtractResourcePlugin::<ExtractedFrameCount>::default() was being added multiple times, moved to build_common() in plugin.rs
+- ExtractResourcePlugin::\<ExtractedFrameCount\>::default() was being added multiple times, moved to build_common() in plugin.rs
 - removed BufferUsages::MAP_READ and BufferUsages::MAP_WRITE from line 47 in plugin.rs, I don't actually know what I'm doing here but removing this works?
 
 below is the original readme.
